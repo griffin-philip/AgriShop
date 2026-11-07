@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Review
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5" style="max-width:600px;">
+    <div class="card shadow p-4">
+        <h3 class="mb-3">
+            Edit Review
+        </h3>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Rating
+                </label>
+                {{ form.rating }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Comment
+                </label>
+                {{ form.comment }}
+            </div>
+
+            <button class="btn btn-success">
+                Update Review
+            </button>
+
+            <a href="{{ request.META.HTTP_REFERER }}"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

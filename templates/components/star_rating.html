@@ -1,0 +1,21 @@
+<span class="text-warning">
+
+{% for i in "12345" %}
+
+    {% if rating >= forloop.counter %}
+        <!-- Full star -->
+        <i class="fa-solid fa-star"></i>
+
+    {% elif rating >= forloop.counter0|add:0.5 %}
+        <!-- Half star -->
+        <i class="fa-solid fa-star-half-stroke"></i>
+
+    {% else %}
+        <!-- Empty star -->
+        <i class="fa-regular fa-star"></i>
+
+    {% endif %}
+
+{% endfor %}
+
+</span>

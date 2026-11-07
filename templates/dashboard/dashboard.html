@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Farmers Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Farmer Dashboard</h2>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-3">
+                <h5>Total Products</h5>
+                <h3 class="text-success">{{ total_products }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-3">
+                <h5>Total Orders</h5>
+                <h3 class="text-primary">{{ total_orders }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-3">
+                <h5>Total Earnings</h5>
+                <h3 class="text-warning">₹ {{ total_earnings }}</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Low Stock Section -->
+    <div class="card shadow-sm mb-4 p-3">
+        <h5>Low Stock Products</h5>
+
+        {% if low_stock_products %}
+            <ul>
+                {% for product in low_stock_products %}
+                    <li>
+                        {{ product.name }} (Stock: {{ product.stock }})
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No low stock items.</p>
+        {% endif %}
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="card shadow-sm p-3">
+        <h5>Recent Orders</h5>
+
+        {% if recent_orders %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in recent_orders %}
+                <tr>
+                    <td>#{{ item.order.id }}</td>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.order.created_at|date:"d M Y" }}</td>
+                    <td>
+                        <span class="badge bg-info">
+                            {{ item.order.status }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No recent orders.</p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+.hero-section{
+    background-image: url("../../images/farm-banner.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 420px;
+    position: relative;
+}
+
+.hero-overlay{
+    background: rgba(0,0,0,0.45);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-overlay h1{
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+}
+
+.hero-section h1{
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
+
+.feature-img {
+    max-width: 22rem;
+    border-radius: 8%;
+}

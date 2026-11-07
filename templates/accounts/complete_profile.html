@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock title %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Complete Your Profile</h3>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.errors }}
+                    </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                    
+                        <!-- only if farmer -->
+                        {% if form.farm_name %}
+                        <div class="mb-3">
+                            <label class="form-label">Farm Name</label>
+                            {{ form.farm_name }}
+                        </div>
+                        {% endif %}
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            {{ form.phone }}
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label class="form-label">State</label>
+                            {{ form.state }}
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label class="form-label">District</label>
+                            {{ form.district }}
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label class="form-label">Pin Code</label>
+                            {{ form.pincode }}
+                        </div>
+                    
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+const districtData = {
+    "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Tirupati"],
+    "Arunachal Pradesh": ["Tawang", "Itanagar", "Ziro", "Pasighat"],
+    "Assam": ["Guwahati", "Dibrugarh", "Silchar", "Jorhat"],
+    "Bihar": ["Patna", "Gaya", "Muzaffarpur", "Bhagalpur"],
+    "Chhattisgarh": ["Raipur", "Bilaspur", "Durg", "Korba"],
+    "Goa": ["North Goa", "South Goa", "Panaji", "Margao"],
+    "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot"],
+    "Haryana": ["Gurgaon", "Faridabad", "Panipat", "Ambala"],
+    "Himachal Pradesh": ["Shimla", "Manali", "Dharamshala", "Solan"],
+    "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro"],
+    "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubli"],
+    "Kerala": ["Thiruvananthapuram", "Kollam", "Pathanamthitta", "Ernakulam"],
+    "Madhya Pradesh": ["Bhopal", "Indore", "Gwalior", "Jabalpur"],
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik"],
+    "Manipur": ["Imphal", "Thoubal", "Churachandpur", "Bishnupur"],
+    "Meghalaya": ["Shillong", "Tura", "Jowai", "Nongpoh"],
+    "Mizoram": ["Aizawl", "Lunglei", "Champhai", "Serchhip"],
+    "Nagaland": ["Kohima", "Dimapur", "Mokokchung", "Tuensang"],
+    "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Puri"],
+    "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala"],
+    "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota"],
+    "Sikkim": ["Gangtok", "Namchi", "Gyalshing", "Mangan"],
+    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem"],
+    "Telangana": ["Hyderabad", "Warangal", "Karimnagar", "Nizamabad"],
+    "Tripura": ["Agartala", "Udaipur", "Dharmanagar", "Kailasahar"],
+    "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi", "Agra"],
+    "Uttarakhand": ["Dehradun", "Haridwar", "Nainital", "Haldwani"],
+    "West Bengal": ["Kolkata", "Howrah", "Darjeeling", "Durgapur"]
+};
+
+const stateSelect = document.getElementById("id_state");
+const districtSelect = document.getElementById("id_district");
+
+stateSelect.addEventListener("change", function() {
+    const selectedState = this.value;
+
+    districtSelect.innerHTML = '<option value="">----- Select District -----</option>';
+
+    if (districtData[selectedState]) {
+        districtData[selectedState].forEach(function(district) {
+            const option = document.createElement("option");
+            option.value = district;
+            option.text = district;
+            districtSelect.appendChild(option);
+        });
+    }
+});
+</script>
+
+{% endblock %}

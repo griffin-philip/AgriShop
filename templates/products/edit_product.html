@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Product{% endblock title %}
+
+{% block content %}
+
+<h2>Edit Product</h2>
+
+{% if form.errors %}
+<div class="alert alert-danger">
+    {{ form.errors }}
+</div>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label>Category</label>
+        {{ form.category }}
+    </div>
+
+    <div class="mb-3">
+        <label>Name</label>
+        {{ form.name }}
+    </div>
+
+    <div class="mb-3">
+        <label>Description</label>
+        {{ form.description }}
+    </div>
+
+    <div class="mb-3">
+        <label>Price</label>
+        {{ form.price }}
+    </div>
+
+    <div class="mb-3">
+        <label>Unit</label>
+        {{ form.unit }}
+    </div>
+
+    <div class="mb-3">
+        <label>Stock</label>
+        {{ form.stock }}
+    </div>
+
+    <div class="mb-3">
+        <label>Image</label>
+        {{ form.image }}
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Update Product
+    </button>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'css/products/products.css' %}">
+{% endblock %}
+
+{% block title %}All Products{% endblock title %}
+
+{% block content %}
+
+<h2 class="mb-4">All Products</h2>
+
+<div class="row">
+
+<!-- ===================== -->
+<!-- FILTER SIDEBAR -->
+<!-- ===================== -->
+<div class="col-md-2">
+
+    <h5 class="mb-3">Filter by Category</h5>
+
+    <form method="GET">
+
+        {% if sort %}
+            <input
+                type="hidden"
+                name="sort"
+                value="{{ sort }}"
+            >
+        {% endif %}
+
+        {% for category in categories %}
+
+            <div class="form-check">
+
+                <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="category"
+                    value="{{ category.id }}"
+                    {% if category.id|stringformat:"s" in selected_categories %}checked{% endif %}
+                >
+
+                <label class="form-check-label">
+                    {{ category.name }}
+                </label>
+
+            </div>
+
+        {% endfor %}
+
+        <button class="btn btn-success btn-sm mt-3">
+            Apply Filter
+        </button>
+        <a href="{% url 'product_list' %}" class="btn btn-outline-secondary btn-sm mt-2">
+            Clear Filters
+        </a>
+
+    </form>
+
+</div>
+
+
+<!-- ===================== -->
+<!-- PRODUCTS SECTION -->
+<!-- ===================== -->
+<div class="col-md-9">
+
+    <!-- SORTING DROPDOWN -->
+    <div class="d-flex justify-content-end mb-3">
+
+        <form method="GET">
+
+            {% for c in selected_categories %}
+                <input
+                    type="hidden"
+                    name="category"
+                    value="{{ c }}"
+                >
+            {% endfor %}
+
+            <select
+                name="sort"
+                class="form-select"
+                onchange="this.form.submit()"
+                style="width:200px"
+            >
+
+                <option value="">
+                    Sort By
+                </option>
+            
+                <option
+                    value="price_low"
+                    {% if sort == "price_low" %}selected{% endif %}
+                >
+                    Price: Low to High
+                </option>
+            
+                <option
+                    value="price_high"
+                    {% if sort == "price_high" %}selected{% endif %}
+                >
+                    Price: High to Low
+                </option>
+            
+                <option
+                    value="rating"
+                    {% if sort == "rating" %}selected{% endif %}
+                >
+                    Average Rating
+                </option>
+            
+            </select>
+        
+        </form>
+
+    </div>
+
+
+    <!-- PRODUCT GRID -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+        {% for product in products %}
+
+        <div class="col">
+
+            <div class="card product-card h-100">
+
+                <!-- PRODUCT IMAGE -->
+                <a href="{% url 'product_detail' product.pk %}">
+                    <img src="{{ product.image.url }}" style="height: 225px"
+                         class="card-img-top product-img">
+                </a>
+
+                <!-- PRODUCT DETAILS -->
+                <div class="card-body d-flex flex-column">
+
+                    <h5 class="card-title mb-1">
+                        {{ product.name }}
+                    </h5>
+
+                    <!-- RATING -->
+                    <p class="small mb-1">
+
+                        {% if product.avg_rating %}
+
+                            {% include "components/star_rating.html" with rating=product.avg_rating %}
+
+                            <span class="text-muted">
+                                ({{ product.review_count }})
+                            </span>
+
+                        {% else %}
+
+                            <span class="text-muted small">
+                                No reviews
+                            </span>
+
+                        {% endif %}
+
+                    </p>
+
+                    <!-- PRICE -->
+                    <p class="text-muted small mb-2">
+                        ₹ {{ product.price }} / {{ product.get_unit_display }}
+                    </p>
+
+                    <!-- STOCK STATUS -->
+                    <p class="small mb-3">
+
+                        {% if product.stock == 0 %}
+
+                            <span class="badge bg-danger">
+                                Out of Stock
+                            </span>
+
+                        {% elif product.stock < 5 %}
+
+                            <span class="badge bg-warning text-dark">
+                                Low Stock
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-success">
+                                In Stock
+                            </span>
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <p>No products found.</p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

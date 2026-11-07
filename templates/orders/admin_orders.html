@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Order Management{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">All Orders</h2>
+
+<table class="table table-bordered">
+
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Update</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for order in orders %}
+
+    <tr>
+
+        <td>#{{ order.id }}</td>
+
+        <td>{{ order.user.username }}</td>
+
+        <td>₹ {{ order.total_amount }}</td>
+
+        <td>
+
+            {% if order.status == "PENDING" %}
+                <span class="badge bg-warning">Pending</span>
+            {% elif order.status == "CONFIRMED" %}
+                <span class="badge bg-info">Confirmed</span>
+            {% elif order.status == "DELIVERED" %}
+                <span class="badge bg-success">Delivered</span>
+            {% endif %}
+
+        </td>
+
+        <td>{{ order.created_at|date:"M d, Y" }}</td>
+
+        <td>
+
+            <a href="{% url 'update_order_status' order.id 'CONFIRMED' %}"
+               class="btn btn-sm btn-primary">
+                Confirm
+            </a>
+
+            <a href="{% url 'update_order_status' order.id 'DELIVERED' %}"
+               class="btn btn-sm btn-success">
+                Deliver
+            </a>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

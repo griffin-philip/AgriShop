@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Agri Shop - Sign Up{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/accounts/accounts.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 85vh;">
+    <div class="col-md-6 col-lg-5">
+
+        <div class="register-card p-4 shadow-sm">
+
+            <h3 class="text-center mb-4 fw-semibold text-success">
+                Create Account
+            </h3>
+
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Register As</label>
+                    {% for radio in form.role %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label class="form-check-label">
+                                {{ radio.choice_label }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    {{ form.password1 }}
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Confirm Password</label>
+                    {{ form.password2 }}
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 py-2">
+                    Register
+                </button>
+            </form>
+
+            <p class="text-center mt-3">
+                Already have an account?
+                <a href="{% url 'login' %}" class="text-success fw-semibold">
+                    Login
+                </a>
+            </p>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

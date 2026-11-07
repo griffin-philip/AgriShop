@@ -1,0 +1,28 @@
+/* White card */
+.register-card {
+    background-color: #fff !important;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Light grey inputs */
+.register-card input,
+.register-card select {
+    background-color: #f5f6f8;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 8px 10px;
+}
+
+/* Input focus effect */
+.register-card input:focus,
+.register-card select:focus {
+    background-color: #ffffff;
+    border-color: #198754; /* Bootstrap success green */
+    box-shadow: 0 0 0 0.1rem rgba(25, 135, 84, 0.25);
+}
+
+/* Labels */
+.register-card label {
+    font-weight: 500;
+}

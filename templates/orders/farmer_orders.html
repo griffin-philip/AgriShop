@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Farmers Orders{% endblock title %}
+
+{% block content %}
+
+<h2>Orders for Your Products</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in orders %}
+        <tr>
+            <td>#{{ item.order.id }}</td>
+            <td>{{ item.order.user.username }}</td>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.order.status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

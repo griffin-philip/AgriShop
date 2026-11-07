@@ -1,0 +1,139 @@
+/* ================================================= */
+/* PRODUCT CARD (Product List Page) */
+/* ================================================= */
+
+.product-card {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Hover animation */
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+}
+
+/* Card body layout */
+.product-card .card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Push buttons to bottom of card */
+.product-card .mt-auto {
+    margin-top: auto !important;
+}
+
+
+/* ================================================= */
+/* PRODUCT IMAGE */
+/* ================================================= */
+
+.product-img {
+    width: 100%;
+    height: 350px;
+    max-width: 500px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+/* Image hover zoom */
+.product-img:hover {
+    transform: scale(1.03);
+}
+
+
+/* ================================================= */
+/* PRODUCT INFO CARD (Product Detail Page) */
+/* ================================================= */
+
+.product-info {
+    padding: 22px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+}
+
+
+/* ================================================= */
+/* PRODUCT PRICE */
+/* ================================================= */
+
+.price {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #198754; /* Bootstrap success color */
+}
+
+
+/* ================================================= */
+/* QUANTITY SELECTOR */
+/* ================================================= */
+
+.qty-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qty-box input {
+    text-align: center;
+    font-weight: 500;
+}
+
+
+/* ================================================= */
+/* REVIEW CARD */
+/* ================================================= */
+
+.review-card {
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.review-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 5px 14px rgba(0,0,0,0.08);
+}
+
+
+/* ================================================= */
+/* STAR RATING INPUT (Review Form) */
+/* ================================================= */
+
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+/* Hide radio buttons */
+.star-rating input {
+    display: none;
+}
+
+/* Star icons */
+.star-rating label {
+    font-size: 1.5rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+/* Selected stars */
+.star-rating input:checked ~ label {
+    color: #ffc107;
+}
+
+/* Hover effect */
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffc107;
+}

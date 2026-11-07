@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Order Success{% endblock title %}
+
+{% block content %}
+
+<div class="text-center">
+    <h2>Order Placed Successfully!</h2>
+    <p>Order ID: #{{ order.id }}</p>
+    <p>Total Amount: ₹ {{ order.total_amount }}</p>
+
+    <a href="{% url 'my_orders' %}" class="btn btn-primary">
+        View My Orders
+    </a>
+</div>
+
+{% endblock %}

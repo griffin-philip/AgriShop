@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+
+{% block title %}Product Details{% endblock title %}
+
+{% load review_extras %}
+{% load static %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'css/products/products.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <!-- PRODUCT SECTION --> 
+
+    <div class="row g-4 align-items-start">
+
+        <!-- PRODUCT IMAGE -->
+        <div class="col-md-6 text-center">
+
+            <!-- Product Image -->
+            <img src="{{ product.image.url }}"
+                 class="img-fluid product-img">
+
+        </div>
+
+
+        <!-- PRODUCT INFORMATION -->
+        <div class="col-md-6">
+
+            <div class="product-info">
+
+                <!-- Product Name -->
+                <h2 class="mb-1">
+                    {{ product.name }}
+                </h2>
+
+                <!-- Category + Farm -->
+                <p class="text-muted small mb-2">
+
+                    {{ product.category.name }}
+                    |
+                    {{ product.farmer.farmerprofile.farm_name }}
+
+                    <!-- STAR RATING COMPONENT -->
+                    {% include "components/star_rating.html" with rating=avg_rating %}
+
+                    <span class="text-muted">
+                        ({{ review_count }})
+                    </span>
+
+                </p>
+
+                <!-- PRICE -->
+                <h4 class="text-success price mb-3">
+                    ₹ {{ product.price }} / {{ product.get_unit_display }}
+                </h4>
+
+                <!-- CART SECTION -->
+
+                {% if user.is_authenticated and user.role == "CUSTOMER" %}
+
+                    {% if product.stock > 0 %}
+
+                        <!-- ADD TO CART FORM -->
+                        <form method="POST" action="{% url 'add_to_cart' product.id %}">
+
+                            {% csrf_token %}
+
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                            
+                                <!-- QUANTITY SELECTOR -->
+                                <div class="input-group"
+                                     style="width:140px;">
+                            
+                                    <!-- Decrease button -->
+                                    <button type="button"
+                                            class="btn btn-outline-secondary"
+                                            onclick="decreaseQty()">
+                                        -
+                                    </button>
+                                
+                                    <!-- Quantity input -->
+                                    <input type="number"
+                                           id="qtyInput"
+                                           name="quantity"
+                                           value="1"
+                                           min="1"
+                                           max="{{ product.stock }}"
+                                           class="form-control text-center">
+                                
+                                    <!-- Increase button -->
+                                    <button type="button"
+                                            class="btn btn-outline-secondary"
+                                            onclick="increaseQty({{ product.stock }})">
+                                        +
+                                    </button>
+                                
+                                </div>
+                            
+                                <!-- ADD TO CART BUTTON -->
+                                <button type="submit"
+                                        class="btn btn-success px-4">
+                            
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                    Add to Cart
+                            
+                                </button>
+                            
+                            </div>
+                        
+                            <!-- STOCK INFORMATION -->
+                            <small class="text-muted">
+                            
+                                <i class="fa-solid fa-box"></i>
+                                {{ product.stock }} items available
+                            
+                            </small>
+                        
+                        </form>
+                    
+                    {% else %}
+                    
+                        <!-- OUT OF STOCK MESSAGE -->
+                        <span class="badge bg-danger p-2">
+                            Out of Stock
+                        </span>
+                    
+                    {% endif %}
+                    
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- DESCRIPTION -->
+
+    <div class="mt-5">
+
+        <h5>Description</h5>
+
+        <p class="text-dark" style="text-align:justify;">
+            {{ product.description }}
+        </p>
+
+        <hr>
+
+        <!-- RATING BREAKDOWN -->
+
+        <h4>Ratings</h4>
+
+        <div class="mb-4 w-50">
+
+            {% for star in stars %}
+
+                <div class="d-flex align-items-center mb-2">
+
+                    <!-- Star Label -->
+                    <span style="width:60px">
+                        {{ star }}★
+                    </span>
+
+                    <!-- Progress Bar -->
+                    <div class="progress flex-grow-1 mx-2" style="height:10px;">
+
+                        <div class="progress-bar bg-warning"
+                             style="width: {{ rating_percent|get_item:star|default:0 }}%">
+                        </div>
+                    
+                    </div>
+
+                    <!-- Rating Count -->
+                    <span>
+                        {{ rating_counts|get_item:star|default:0 }}
+                    </span>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- REVIEW HEADER -->
+
+        <div class="row mb-3">
+
+            <h4 class="col">
+                Reviews
+            </h4>
+
+            <!-- Sort Buttons -->
+            <div class="col text-end">
+
+                <strong>Sort:</strong>
+
+                <a href="?sort=latest"
+                   class="btn btn-sm btn-outline-secondary">
+
+                    Latest
+
+                </a>
+
+                <a href="?sort=rating"
+                   class="btn btn-sm btn-outline-secondary">
+
+                    Highest Rating
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- REVIEWS LIST -->
+
+        {% for review in reviews %}
+
+            <div class="card mb-3 p-3 review-card">
+
+                <div class="d-flex justify-content-between">
+
+                    <!-- Username -->
+                    <strong>
+                        {{ review.user.username }}
+                    </strong>
+
+                    <!-- Rating -->
+                    <span class="text-warning">
+                        {{ review.rating }} ★
+                    </span>
+
+                </div>
+
+                <!-- Comment -->
+                <p class="mt-2">
+                    {{ review.comment }}
+                </p>
+
+                <!-- Edit/Delete if owner -->
+                {% if review.user == request.user %}
+
+                    <div class="mt-2">
+
+                        <a href="{% url 'edit_review' review.id %}"
+                           class="btn btn-sm btn-outline-primary">
+
+                            Edit
+
+                        </a>
+
+                        <a href="{% url 'delete_review' review.id %}"
+                           class="btn btn-sm btn-outline-danger">
+
+                            Delete
+
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+
+            <p>No reviews yet.</p>
+
+        {% endfor %}
+
+        <!-- WRITE REVIEW -->
+
+        {% if user.is_authenticated and user.role == "CUSTOMER" %}
+
+            {% if user_review %}
+
+                <!-- USER ALREADY REVIEWED -->
+                <div class="alert alert-info mt-4">
+                
+                    You already reviewed this product.
+                
+                    <a href="{% url 'edit_review' user_review.id %}"
+                       class="btn btn-sm btn-primary ms-2">
+                
+                       Edit Review
+                
+                    </a>
+                
+                </div>
+            
+            {% else %}
+            
+                <!-- WRITE REVIEW -->
+                <h5 class="mt-4">Write a Review</h5>
+            
+                <form method="POST" action="{% url 'add_review' product.id %}">
+                    {% csrf_token %}
+                
+                    <div class="mb-3">
+                        <label class="form-label">Rating</label>
+                    
+                        <div class="star-rating">
+                        
+                            <input type="radio" name="rating" value="5" id="star5">
+                            <label for="star5"><i class="fa-solid fa-star"></i></label>
+                        
+                            <input type="radio" name="rating" value="4" id="star4">
+                            <label for="star4"><i class="fa-solid fa-star"></i></label>
+                        
+                            <input type="radio" name="rating" value="3" id="star3">
+                            <label for="star3"><i class="fa-solid fa-star"></i></label>
+                        
+                            <input type="radio" name="rating" value="2" id="star2">
+                            <label for="star2"><i class="fa-solid fa-star"></i></label>
+                        
+                            <input type="radio" name="rating" value="1" id="star1">
+                            <label for="star1"><i class="fa-solid fa-star"></i></label>
+                        
+                        </div>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label class="form-label">Comment</label>
+                        {{ form.comment }}
+                    </div>
+                
+                    <button class="btn btn-success">
+                        Submit Review
+                    </button>
+                
+                </form>
+            
+            {% endif %}
+            
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<script>
+    function increaseQty(stock){
+        let input = document.getElementById("qtyInput")
+        let value = parseInt(input.value)
+
+        if(value < stock){
+            input.value = value + 1
+        }
+    }
+
+    function decreaseQty(){
+        let input = document.getElementById("qtyInput")
+        let value = parseInt(input.value)
+
+        if(value > 1){
+            input.value = value - 1
+        }
+    }
+</script>
+
+{% endblock %}
