@@ -139,3 +139,17 @@ http://127.0.0.1:8000/
 **Griffin Philip Sabu**
 
 [GitHub Profile](https://github.com/griffin-philip)
+
+## Screenshots
+
+### Homepage
+![Agri Shop Homepage](screenshots/homepage.png)
+
+### Product Listing
+![Product Listing](screenshots/product-listing.png)
+
+### Shopping Cart
+![Shopping Cart](screenshots/shopping-cart.png)
+
+### Farmer Dashboard
+![Farmer Dashboard](screenshots/farmer-dashboard.png)
